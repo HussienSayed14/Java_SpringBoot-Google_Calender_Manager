@@ -2,6 +2,7 @@ package com.ropulva.CalendarManagement.event;
 
 
 import com.ropulva.CalendarManagement.creator.CreatorModel;
+import com.ropulva.CalendarManagement.startEnd.StartEndModel;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,6 +35,9 @@ public class EventModel {
     private String colorId;
     @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
     private CreatorModel creator;
+
+    @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
+    private StartEndModel startEndDate;
 
 
 }
