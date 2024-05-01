@@ -27,7 +27,7 @@ public class AttendeeModel {
     private String name;
     @Column(name = "created")
     private Timestamp created;
-    @OneToOne
-    @JoinColumn(name = "event_id", unique = true)
+    @ManyToOne
+    @JoinColumn(name="event_id", nullable=false)
     private EventModel event;
 }

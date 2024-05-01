@@ -1,6 +1,7 @@
 package com.ropulva.CalendarManagement.event;
 
 
+import com.ropulva.CalendarManagement.attendee.AttendeeModel;
 import com.ropulva.CalendarManagement.creator.CreatorModel;
 import com.ropulva.CalendarManagement.startEnd.StartEndModel;
 import jakarta.persistence.*;
@@ -8,6 +9,7 @@ import lombok.*;
 
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -37,6 +39,9 @@ public class EventModel {
     private CreatorModel creator;
     @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
     private StartEndModel startEndDate;
+
+    @OneToMany(mappedBy = "event")
+    private List<AttendeeModel> attendeesList;
 
 
 }
