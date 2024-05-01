@@ -22,19 +22,16 @@ public class StartEndModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     @Column(name = "start_date")
     private Date startDate;
     @Column(name = "end_date")
     private Date endDate;
     @Column(name = "start_time")
     private Time startTime;
-
     @Column(name = "end_time")
     private Time endTime;
     @Column(name = "timestamp")
     private Timestamp timestamp;
-
     @OneToOne
     @JoinColumn(name = "event_id", unique = true)
     private EventModel event;

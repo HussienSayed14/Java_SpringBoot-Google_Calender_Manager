@@ -35,7 +35,6 @@ public class EventModel {
     private String colorId;
     @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
     private CreatorModel creator;
-
     @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
     private StartEndModel startEndDate;
 
