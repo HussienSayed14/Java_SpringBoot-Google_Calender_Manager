@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 @Setter
 @Builder
 @Table(name = "start_end", indexes = {
-        @Index(name = "idx_event_id", columnList = "event_id"),
+        @Index(name = "idx_event_id_start_end", columnList = "event_id")
 })
 public class StartEndModel {
 

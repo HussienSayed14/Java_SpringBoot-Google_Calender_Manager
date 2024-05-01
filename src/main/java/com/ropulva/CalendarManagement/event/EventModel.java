@@ -6,7 +6,7 @@ import com.ropulva.CalendarManagement.startEnd.StartEndModel;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Date;
+
 import java.sql.Timestamp;
 
 @Entity

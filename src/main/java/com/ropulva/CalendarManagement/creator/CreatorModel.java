@@ -12,7 +12,7 @@ import lombok.*;
 @Setter
 @Builder
 @Table(name = "creator", indexes = {
-        @Index(name = "idx_event_id", columnList = "event_id"),
+        @Index(name = "idx_event_id_creator", columnList = "event_id")
 })
 public class CreatorModel {
     @Id

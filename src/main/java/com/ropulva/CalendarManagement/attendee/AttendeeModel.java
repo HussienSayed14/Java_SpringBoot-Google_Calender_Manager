@@ -13,8 +13,8 @@ import java.sql.Timestamp;
 @Setter
 @Builder
 @Table(name = "attendee", indexes = {
-        @Index(name = "idx_event_id", columnList = "event_id"),
-        @Index(name = "idx_email", columnList = "email"),
+        @Index(name = "idx_event_id_attendee", columnList = "event_id"),
+        @Index(name = "idx_email_attendee", columnList = "email")
 })
 public class AttendeeModel {
 
