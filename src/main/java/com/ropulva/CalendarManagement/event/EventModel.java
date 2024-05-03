@@ -3,11 +3,12 @@ package com.ropulva.CalendarManagement.event;
 
 import com.ropulva.CalendarManagement.attendee.AttendeeModel;
 import com.ropulva.CalendarManagement.creator.CreatorModel;
-import com.ropulva.CalendarManagement.startEnd.StartEndModel;
 import jakarta.persistence.*;
 import lombok.*;
 
 
+import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -35,13 +36,16 @@ public class EventModel {
     private Timestamp updates;
     @Column(name = "color_id")
     private String colorId;
-
-    @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
-    private StartEndModel startEndDate;
-
+    @Column(name = "start_date")
+    private Date startDate;
+    @Column(name = "end_date")
+    private Date endDate;
+    @Column(name = "start_time")
+    private Time startTime;
+    @Column(name = "end_time")
+    private Time endTime;
     @OneToMany(mappedBy = "event")
     private List<AttendeeModel> attendeesList;
-
     @ManyToOne
     @JoinColumn(name="creator_id", nullable=false)
     private CreatorModel creator;
