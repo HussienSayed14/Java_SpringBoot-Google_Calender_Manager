@@ -2,7 +2,9 @@ package com.ropulva.CalendarManagement.event;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ropulva.CalendarManagement.creator.CreatorModel;
+import com.ropulva.CalendarManagement.event.dto.EventDto;
 import jakarta.persistence.*;
 import lombok.*;
 import java.sql.Date;
@@ -18,6 +20,7 @@ import java.sql.Timestamp;
 @Builder
 @Table(name = "event")
 public class EventModel {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +47,8 @@ public class EventModel {
     private Time endTime;
     @ManyToOne
     @JoinColumn(name="creator_id", nullable=false)
+    @JsonIgnore
     private CreatorModel creator;
 
 }
+

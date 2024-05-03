@@ -10,6 +10,7 @@ import com.ropulva.CalendarManagement.util.GenericResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +22,10 @@ public class EventService {
 
     private final CreatorService creatorService;
     private final EventRepository eventRepository;
+    private final EventCacheService eventCacheService;
 
     private static final Logger logger = LoggerFactory.getLogger(EventService.class);
+
 
     public ResponseEntity<GenericResponse> createEvent(CreateEventRequest request) {
         GenericResponse response = new GenericResponse();
@@ -37,6 +40,7 @@ public class EventService {
 
             if(createEvent(request,eventCreator)){
                 response.setSuccessful();
+                eventCacheService.clearAllCachedEvents();
             }else {
                 response.setServerErrorHappened();
             }
@@ -75,6 +79,8 @@ public class EventService {
     }
 
 
+
+
     public ResponseEntity<GenericResponse> deleteEvent(String id) {
         GenericResponse response = new GenericResponse();
         try{
@@ -84,6 +90,7 @@ public class EventService {
             }else {
                 eventRepository.deleteById(eventId);
                 response.setSuccessful();
+                eventCacheService.clearAllCachedEvents();
             }
 
         }catch (Exception e){
@@ -93,18 +100,18 @@ public class EventService {
         return ResponseEntity.status(response.getHttpStatus()).body(response);
     }
 
-    //TODO: Implement Caching
     public ResponseEntity<AllEventsResponse> getAllEvents() {
         AllEventsResponse response = new AllEventsResponse();
         try{
-            List<EventDto> eventsList = eventRepository.getAllEvents();
-            response.setSuccessful();
-            response.setEventsList(eventsList);
+             response.setEventsList(eventCacheService.getAllEvents());
+             response.setSuccessful();
         }catch (Exception e){
             logger.error(e.getMessage());
+            e.printStackTrace();
             response.setServerErrorHappened();
         }
-
         return ResponseEntity.status(response.getHttpStatus()).body(response);
     }
+
+
 }

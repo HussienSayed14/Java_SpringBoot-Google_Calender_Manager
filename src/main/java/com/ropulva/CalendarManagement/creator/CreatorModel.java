@@ -1,5 +1,6 @@
 package com.ropulva.CalendarManagement.creator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ropulva.CalendarManagement.event.EventModel;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,6 +21,7 @@ public class CreatorModel {
     @Column(name = "name",length = 30)
     private String name;
     @OneToMany(mappedBy = "creator")
+    @JsonIgnore
     private List<EventModel> eventsList;
 
 }
