@@ -1,7 +1,5 @@
 package com.ropulva.CalendarManagement.creator;
 
-
-import com.ropulva.CalendarManagement.attendee.AttendeeModel;
 import com.ropulva.CalendarManagement.event.EventModel;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,9 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@Table(name = "creator", indexes = {
-        @Index(name = "idx_event_id_creator", columnList = "event_id")
-})
+@Table(name = "creator")
 public class CreatorModel {
     @Id
     @Column(name = "email")

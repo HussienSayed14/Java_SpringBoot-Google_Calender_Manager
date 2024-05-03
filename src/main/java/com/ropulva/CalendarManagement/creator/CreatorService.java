@@ -19,6 +19,7 @@ public class CreatorService {
             CreatorModel existingCreator = creatorRepository.getCreator(email);
             if(existingCreator != null) return existingCreator;
 
+            //TODO: Send Welcome E-mail
             CreatorModel newCreator = CreatorModel.builder()
                     .email(email)
                     .name(name)

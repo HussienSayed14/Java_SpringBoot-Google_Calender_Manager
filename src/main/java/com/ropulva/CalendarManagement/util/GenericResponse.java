@@ -36,4 +36,11 @@ public class GenericResponse {
         this.timestamp = DateTimeFormatter.getCurrentTimestamp();
     }
 
+    public void setEventDoesNotExist() {
+        this.responseCode = "1";
+        this.responseMessage = "This Event Does Not Exist";
+        this.httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+        this.responseStatus = "Failed";
+        this.timestamp = DateTimeFormatter.getCurrentTimestamp();
+    }
 }

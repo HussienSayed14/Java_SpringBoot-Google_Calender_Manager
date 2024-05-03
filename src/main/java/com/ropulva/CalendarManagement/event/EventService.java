@@ -46,8 +46,8 @@ public class EventService {
 
     private boolean createEvent(CreateEventRequest request,CreatorModel eventCreator){
 
+        //TODO: Publish Event to Google Calendar
         try{
-
             EventModel event = EventModel.builder()
                     .created(DateTimeFormatter.getCurrentTimestamp())
                     .creator(eventCreator)
@@ -71,4 +71,26 @@ public class EventService {
     }
 
 
+    public ResponseEntity<GenericResponse> deleteEvent(String id) {
+        GenericResponse response = new GenericResponse();
+        try{
+            long eventId = eventRepository.getEventIdById(Long.parseLong(id));
+            if(eventId == 0){
+                response.setEventDoesNotExist();
+            }else {
+                eventRepository.deleteById(eventId);
+                response.setSuccessful();
+            }
+
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            response.setServerErrorHappened();
+        }
+        return ResponseEntity.status(response.getHttpStatus()).body(response);
+    }
+
+    //TODO: Implement Caching
+    public ResponseEntity<?> getAllEvents() {
+        return null;
+    }
 }

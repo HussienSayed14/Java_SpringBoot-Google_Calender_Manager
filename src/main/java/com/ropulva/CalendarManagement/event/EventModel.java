@@ -1,16 +1,14 @@
 package com.ropulva.CalendarManagement.event;
 
 
-import com.ropulva.CalendarManagement.attendee.AttendeeModel;
+
 import com.ropulva.CalendarManagement.creator.CreatorModel;
 import jakarta.persistence.*;
 import lombok.*;
-
-
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.List;
+
 
 @Entity
 @AllArgsConstructor
@@ -44,8 +42,6 @@ public class EventModel {
     private Time startTime;
     @Column(name = "end_time")
     private Time endTime;
-    @OneToMany(mappedBy = "event")
-    private List<AttendeeModel> attendeesList;
     @ManyToOne
     @JoinColumn(name="creator_id", nullable=false)
     private CreatorModel creator;
