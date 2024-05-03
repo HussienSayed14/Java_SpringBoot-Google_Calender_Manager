@@ -2,7 +2,9 @@ package com.ropulva.CalendarManagement.event;
 
 import com.ropulva.CalendarManagement.creator.CreatorModel;
 import com.ropulva.CalendarManagement.creator.CreatorService;
+import com.ropulva.CalendarManagement.event.dto.EventDto;
 import com.ropulva.CalendarManagement.event.requests.CreateEventRequest;
+import com.ropulva.CalendarManagement.event.responses.AllEventsResponse;
 import com.ropulva.CalendarManagement.util.DateTimeFormatter;
 import com.ropulva.CalendarManagement.util.GenericResponse;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -90,7 +94,17 @@ public class EventService {
     }
 
     //TODO: Implement Caching
-    public ResponseEntity<?> getAllEvents() {
-        return null;
+    public ResponseEntity<AllEventsResponse> getAllEvents() {
+        AllEventsResponse response = new AllEventsResponse();
+        try{
+            List<EventDto> eventsList = eventRepository.getAllEvents();
+            response.setSuccessful();
+            response.setEventsList(eventsList);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            response.setServerErrorHappened();
+        }
+
+        return ResponseEntity.status(response.getHttpStatus()).body(response);
     }
 }

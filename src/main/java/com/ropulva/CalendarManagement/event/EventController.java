@@ -2,6 +2,7 @@ package com.ropulva.CalendarManagement.event;
 
 
 import com.ropulva.CalendarManagement.event.requests.CreateEventRequest;
+import com.ropulva.CalendarManagement.event.responses.AllEventsResponse;
 import com.ropulva.CalendarManagement.util.GenericResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,7 +32,7 @@ public class EventController {
     }
 
     @GetMapping("/getAll")
-    ResponseEntity<?> getAllEvents(){
+    ResponseEntity<AllEventsResponse> getAllEvents(){
         return eventService.getAllEvents();
     }
 }
