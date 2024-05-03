@@ -15,9 +15,9 @@ import java.util.List;
 @Table(name = "creator")
 public class CreatorModel {
     @Id
-    @Column(name = "email")
+    @Column(name = "email",length = 50)
     private String email;
-    @Column(name = "name")
+    @Column(name = "name",length = 30)
     private String name;
     @OneToMany(mappedBy = "creator")
     private List<EventModel> eventsList;

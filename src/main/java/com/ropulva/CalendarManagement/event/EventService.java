@@ -52,7 +52,7 @@ public class EventService {
                     .created(DateTimeFormatter.getCurrentTimestamp())
                     .creator(eventCreator)
                     .description(request.getDescription())
-                    .summary(request.getSummary())
+                    .title(request.getTitle())
                     .colorId(request.getColorId())
                     .status("Pending")
                     .startDate(request.getStartDate())

@@ -16,7 +16,7 @@ public class CreateEventRequest {
     private String description;
 
     @NotEmpty
-    private String summary;
+    private String title;
     @NotEmpty
     private String colorId;
     @Email

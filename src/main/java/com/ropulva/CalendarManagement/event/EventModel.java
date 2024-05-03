@@ -22,17 +22,17 @@ public class EventModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "status")
+    @Column(name = "status",length = 10)
     private String status;
-    @Column(name = "description")
+    @Column(name = "description",columnDefinition = "text")
     private String description;
-    @Column(name = "summary")
-    private String summary;
+    @Column(name = "title", length = 100)
+    private String title;
     @Column(name = "created")
     private Timestamp created;
     @Column(name = "updated")
     private Timestamp updates;
-    @Column(name = "color_id")
+    @Column(name = "color_id",length = 15)
     private String colorId;
     @Column(name = "start_date")
     private Date startDate;
