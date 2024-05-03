@@ -1,9 +1,12 @@
 package com.ropulva.CalendarManagement.creator;
 
 
+import com.ropulva.CalendarManagement.attendee.AttendeeModel;
 import com.ropulva.CalendarManagement.event.EventModel;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -20,9 +23,7 @@ public class CreatorModel {
     private String email;
     @Column(name = "name")
     private String name;
-    @OneToOne
-    @JoinColumn(name = "event_id", unique = true)
-    private EventModel event;
-
+    @OneToMany(mappedBy = "creator")
+    private List<EventModel> eventsList;
 
 }

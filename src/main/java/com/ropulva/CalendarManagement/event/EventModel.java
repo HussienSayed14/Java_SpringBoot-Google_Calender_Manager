@@ -35,13 +35,15 @@ public class EventModel {
     private Timestamp updates;
     @Column(name = "color_id")
     private String colorId;
-    @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
-    private CreatorModel creator;
+
     @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
     private StartEndModel startEndDate;
 
     @OneToMany(mappedBy = "event")
     private List<AttendeeModel> attendeesList;
 
+    @ManyToOne
+    @JoinColumn(name="creator_id", nullable=false)
+    private CreatorModel creator;
 
 }
