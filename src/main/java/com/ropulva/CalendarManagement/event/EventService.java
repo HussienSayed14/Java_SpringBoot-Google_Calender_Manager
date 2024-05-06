@@ -149,6 +149,10 @@ public class EventService {
         GenericResponse response = new GenericResponse();
         try {
             EventModel event =  eventRepository.getEventById(request.getEventId());
+            if(event == null){
+                response.setEventDoesNotExist();
+                return ResponseEntity.status(response.getHttpStatus()).body(response);
+            }
             if(request.getTitle() != null) event.setTitle(request.getTitle());
             if(request.getDescription() != null) event.setDescription(request.getDescription());
             if(request.getStartDate() != null) event.setStartDate(request.getStartDate());

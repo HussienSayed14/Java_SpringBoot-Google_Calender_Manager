@@ -17,7 +17,7 @@ public interface EventRepository extends JpaRepository<EventModel,Long> {
     @Query(value = "SELECT * FROM event",nativeQuery = true)
     List<EventModel> getAllEvents();
 
-    @Query(value = "SELECT * FROM event WHERE id =:id")
+    @Query(value = "SELECT * FROM event WHERE id =:id",nativeQuery = true)
     EventModel getEventById(long id);
 
 
