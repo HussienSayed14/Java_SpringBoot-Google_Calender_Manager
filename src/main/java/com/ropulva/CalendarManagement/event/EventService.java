@@ -7,13 +7,17 @@ import com.ropulva.CalendarManagement.event.responses.AllEventsResponse;
 import com.ropulva.CalendarManagement.google.GoogleService;
 import com.ropulva.CalendarManagement.util.DateTimeFormatterUtil;
 import com.ropulva.CalendarManagement.util.GenericResponse;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -42,7 +46,6 @@ public class EventService {
             if(createEvent(request,eventCreator)){
                 response.setSuccessful();
                 eventCacheService.clearAllCachedEvents();
-                googleService.addEventToCalendar(request);
             }else {
                 response.setServerErrorHappened();
             }
@@ -112,6 +115,32 @@ public class EventService {
             response.setServerErrorHappened();
         }
         return ResponseEntity.status(response.getHttpStatus()).body(response);
+    }
+
+
+    // It will run automatically every 10 minutes
+    @Scheduled(cron = "0 0/10 * * * ?")
+    @Transactional
+    public void publishEvents(){
+        try {
+
+            List<EventModel> pendingEventsList = eventRepository.getPendingEventsId();
+            List<Long> publishedEventsId = new ArrayList<>();
+            for(EventModel event: pendingEventsList){
+                boolean success = googleService.addEventToCalendar(event);
+                if(success){
+                    publishedEventsId.add(event.getId());
+                }
+            }
+            logger.info("Publishing Events with size if " + publishedEventsId.size() + " event");
+            eventRepository.updateEventStatus(publishedEventsId);
+
+
+        }catch (Exception e){
+            logger.error(e.getMessage());
+        }
+
+
     }
 
 }

@@ -9,7 +9,7 @@ import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.ropulva.CalendarManagement.event.requests.CreateEventRequest;
+import com.ropulva.CalendarManagement.event.EventModel;
 import com.ropulva.CalendarManagement.util.DateTimeFormatterUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -30,29 +30,28 @@ public class GoogleService {
 
 
 
-    public boolean addEventToCalendar(CreateEventRequest eventRequest) throws IOException {
+    public boolean addEventToCalendar(EventModel eventModel) throws IOException {
        try{
            System.out.println("Calling add event");
            Calendar service = buildCalendarService();
+           if(service == null){
+               return false;
+           }
 
-           Timestamp startStamp = DateTimeFormatterUtil.combineDateAndTime(eventRequest.getStartDate(),eventRequest.getStartTime());
-           Timestamp endStamp = DateTimeFormatterUtil.combineDateAndTime(eventRequest.getEndDate(),eventRequest.getEndTime());
 
            // Create a new calendar list entry
            Event event = new Event()
-                   .setSummary(eventRequest.getTitle())
-                   .setLocation("Somewhere")
-                   .setDescription(eventRequest.getDescription());
+                   .setSummary(eventModel.getTitle())
+                   .setDescription(eventModel.getDescription());
 
 
-           DateTime startDateTime = new DateTime(new Date(startStamp.getTime()));
-           System.out.println(startDateTime);
+           DateTime startDateTime = new DateTime(new Date(eventModel.getStartDate().getTime()));
            EventDateTime start = new EventDateTime()
                    .setDateTime(startDateTime)
                    .setTimeZone("Africa/Cairo");
            event.setStart(start);
 
-           DateTime endDateTime = new DateTime(new Date(endStamp.getTime()));
+           DateTime endDateTime = new DateTime(new Date(eventModel.getEndDate().getTime()));
            EventDateTime end = new EventDateTime()
                    .setDateTime(endDateTime)
                    .setTimeZone("Africa/Cairo");
@@ -60,14 +59,10 @@ public class GoogleService {
 
            String calendarId = "primary";
            event = service.events().insert(calendarId, event).execute();
-           System.out.println("Event Created: " + event);
-           System.out.println("Event URL: " + event.getHtmlLink()); // Direct URL to the event in Google Calendar
            shareCalendar("primary","hussiens399@gmail.com");
            if(event == null){
                return false;
            }
-
-           //TODO: Set Event as Published
            return true;
 
        }catch (Exception e){
