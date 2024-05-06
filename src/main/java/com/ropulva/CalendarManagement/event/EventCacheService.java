@@ -1,7 +1,5 @@
 package com.ropulva.CalendarManagement.event;
 
-import com.ropulva.CalendarManagement.event.dto.EventDto;
-import com.ropulva.CalendarManagement.event.responses.AllEventsResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

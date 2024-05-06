@@ -2,19 +2,19 @@ package com.ropulva.CalendarManagement.event;
 
 import com.ropulva.CalendarManagement.creator.CreatorModel;
 import com.ropulva.CalendarManagement.creator.CreatorService;
-import com.ropulva.CalendarManagement.event.dto.EventDto;
 import com.ropulva.CalendarManagement.event.requests.CreateEventRequest;
 import com.ropulva.CalendarManagement.event.responses.AllEventsResponse;
-import com.ropulva.CalendarManagement.util.DateTimeFormatter;
+import com.ropulva.CalendarManagement.google.GoogleService;
+import com.ropulva.CalendarManagement.util.DateTimeFormatterUtil;
 import com.ropulva.CalendarManagement.util.GenericResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.sql.Timestamp;
+
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +23,7 @@ public class EventService {
     private final CreatorService creatorService;
     private final EventRepository eventRepository;
     private final EventCacheService eventCacheService;
+    private final GoogleService googleService;
 
     private static final Logger logger = LoggerFactory.getLogger(EventService.class);
 
@@ -41,6 +42,7 @@ public class EventService {
             if(createEvent(request,eventCreator)){
                 response.setSuccessful();
                 eventCacheService.clearAllCachedEvents();
+                googleService.addEventToCalendar(request);
             }else {
                 response.setServerErrorHappened();
             }
@@ -54,19 +56,18 @@ public class EventService {
 
     private boolean createEvent(CreateEventRequest request,CreatorModel eventCreator){
 
-        //TODO: Publish Event to Google Calendar
         try{
+            Timestamp startStamp = DateTimeFormatterUtil.combineDateAndTime(request.getStartDate(),request.getStartTime());
+            Timestamp endStamp = DateTimeFormatterUtil.combineDateAndTime(request.getEndDate(),request.getEndTime());
             EventModel event = EventModel.builder()
-                    .created(DateTimeFormatter.getCurrentTimestamp())
+                    .created(DateTimeFormatterUtil.getCurrentTimestamp())
                     .creator(eventCreator)
                     .description(request.getDescription())
                     .title(request.getTitle())
                     .colorId(request.getColorId())
                     .status("Pending")
-                    .startDate(request.getStartDate())
-                    .endDate(request.getEndDate())
-                    .startTime(request.getStartTime())
-                    .endTime(request.getEndTime())
+                    .startDate(startStamp)
+                    .endDate(endStamp)
                     .updates(null)
                     .build();
             eventRepository.save(event);
@@ -112,6 +113,5 @@ public class EventService {
         }
         return ResponseEntity.status(response.getHttpStatus()).body(response);
     }
-
 
 }

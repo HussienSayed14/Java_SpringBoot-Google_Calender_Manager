@@ -13,8 +13,8 @@ import java.sql.Time;
 @Getter
 @Setter
 public class CreateEventRequest {
-    private String description;
 
+    private String description;
     @NotEmpty
     private String title;
     @NotEmpty
@@ -22,16 +22,12 @@ public class CreateEventRequest {
     @Email
     @NotEmpty
     private String creatorEmail;
-
     @NotEmpty
     private String creatorName;
-
     @FutureOrPresent
     private Date startDate;
-
     @FutureOrPresent
     private Date endDate;
-
     private Time startTime;
     private Time endTime;
 }

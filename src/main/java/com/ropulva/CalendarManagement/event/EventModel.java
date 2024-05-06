@@ -18,7 +18,7 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @Builder
-@Table(name = "event")
+@Table(name = "event",indexes = {@Index(name = "idx_event_status",columnList = "status")})
 public class EventModel {
 
 
@@ -29,7 +29,7 @@ public class EventModel {
     private String status;
     @Column(name = "description",columnDefinition = "text")
     private String description;
-    @Column(name = "title", length = 100)
+    @Column(name = "title", length = 60)
     private String title;
     @Column(name = "created")
     private Timestamp created;
@@ -37,14 +37,10 @@ public class EventModel {
     private Timestamp updates;
     @Column(name = "color_id",length = 15)
     private String colorId;
-    @Column(name = "start_date")
-    private Date startDate;
-    @Column(name = "end_date")
-    private Date endDate;
-    @Column(name = "start_time")
-    private Time startTime;
-    @Column(name = "end_time")
-    private Time endTime;
+    @Column(name = "start_timestamp")
+    private Timestamp startDate;
+    @Column(name = "end_timestamp")
+    private Timestamp endDate;
     @ManyToOne
     @JoinColumn(name="creator_id", nullable=false)
     @JsonIgnore

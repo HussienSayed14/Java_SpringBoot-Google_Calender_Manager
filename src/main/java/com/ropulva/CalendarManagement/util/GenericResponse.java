@@ -25,7 +25,7 @@ public class GenericResponse {
         this.responseMessage = "Successful";
         this.httpStatus = HttpStatus.OK;
         this.responseStatus = "Success";
-        this.timestamp = DateTimeFormatter.getCurrentTimestamp();
+        this.timestamp = DateTimeFormatterUtil.getCurrentTimestamp();
     }
 
     public void setServerErrorHappened(){
@@ -33,7 +33,7 @@ public class GenericResponse {
         this.responseMessage = "Something wrong happened within our server.";
         this.httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         this.responseStatus = "Failed";
-        this.timestamp = DateTimeFormatter.getCurrentTimestamp();
+        this.timestamp = DateTimeFormatterUtil.getCurrentTimestamp();
     }
 
     public void setEventDoesNotExist() {
@@ -41,6 +41,6 @@ public class GenericResponse {
         this.responseMessage = "This Event Does Not Exist";
         this.httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
         this.responseStatus = "Failed";
-        this.timestamp = DateTimeFormatter.getCurrentTimestamp();
+        this.timestamp = DateTimeFormatterUtil.getCurrentTimestamp();
     }
 }
