@@ -21,7 +21,6 @@ import java.sql.Timestamp;
 @Table(name = "event",indexes = {@Index(name = "idx_event_status",columnList = "status")})
 public class EventModel {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
