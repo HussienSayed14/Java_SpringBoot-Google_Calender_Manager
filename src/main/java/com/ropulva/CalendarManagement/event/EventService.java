@@ -3,6 +3,7 @@ package com.ropulva.CalendarManagement.event;
 import com.ropulva.CalendarManagement.creator.CreatorModel;
 import com.ropulva.CalendarManagement.creator.CreatorService;
 import com.ropulva.CalendarManagement.event.requests.CreateEventRequest;
+import com.ropulva.CalendarManagement.event.requests.UpdateEventRequest;
 import com.ropulva.CalendarManagement.event.responses.AllEventsResponse;
 import com.ropulva.CalendarManagement.google.GoogleService;
 import com.ropulva.CalendarManagement.util.DateTimeFormatterUtil;
@@ -46,6 +47,7 @@ public class EventService {
             if(createEvent(request,eventCreator)){
                 response.setSuccessful();
                 eventCacheService.clearAllCachedEvents();
+                publishEvents();
             }else {
                 response.setServerErrorHappened();
             }
@@ -118,12 +120,11 @@ public class EventService {
     }
 
 
-    // It will run automatically every 10 minutes
-    @Scheduled(cron = "0 0/10 * * * ?")
+    // It will run automatically every 30 minutes
+    @Scheduled(cron = "0 0/30 * * * ?")
     @Transactional
     public void publishEvents(){
         try {
-
             List<EventModel> pendingEventsList = eventRepository.getPendingEventsId();
             List<Long> publishedEventsId = new ArrayList<>();
             for(EventModel event: pendingEventsList){
@@ -133,14 +134,33 @@ public class EventService {
                 }
             }
             logger.info("Publishing Events with size if " + publishedEventsId.size() + " event");
-            eventRepository.updateEventStatus(publishedEventsId);
+            if(publishedEventsId.size() > 0){
+
+                eventRepository.updateEventStatus(publishedEventsId);
+            }
 
 
         }catch (Exception e){
             logger.error(e.getMessage());
         }
-
-
     }
 
+    public ResponseEntity<GenericResponse> updateEvent(UpdateEventRequest request) {
+        GenericResponse response = new GenericResponse();
+        try {
+            EventModel event =  eventRepository.getEventById(request.getEventId());
+            if(request.getTitle() != null) event.setTitle(request.getTitle());
+            if(request.getDescription() != null) event.setDescription(request.getDescription());
+            if(request.getStartDate() != null) event.setStartDate(request.getStartDate());
+            if(request.getEndDate() != null) event.setEndDate(request.getEndDate());
+            event.setUpdates(DateTimeFormatterUtil.getCurrentTimestamp());
+            eventRepository.save(event);
+            response.setSuccessful();
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            response.setServerErrorHappened();
+        }
+
+        return ResponseEntity.status(response.getHttpStatus()).body(response);
+    }
 }

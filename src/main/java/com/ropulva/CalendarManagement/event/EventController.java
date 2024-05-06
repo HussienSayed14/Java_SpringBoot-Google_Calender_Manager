@@ -2,6 +2,7 @@ package com.ropulva.CalendarManagement.event;
 
 
 import com.ropulva.CalendarManagement.event.requests.CreateEventRequest;
+import com.ropulva.CalendarManagement.event.requests.UpdateEventRequest;
 import com.ropulva.CalendarManagement.event.responses.AllEventsResponse;
 import com.ropulva.CalendarManagement.util.GenericResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,23 +37,14 @@ public class EventController {
     }
 
     @GetMapping("/getAll")
+    @Operation(summary = "Get All Events", description = "Endpoint to get all the events, then add result to Redis Cache")
     ResponseEntity<AllEventsResponse> getAllEvents(){
         return eventService.getAllEvents();
     }
 
-    private RedirectView googleLogin() {
-        System.out.println("Calling Google Login");
-        String redirectUri = "http://localhost:8080/google/auth";
-        String clientId = CLIENT_ID;
-        String scope = "https://www.googleapis.com/auth/calendar";
-        String authUrl = "https://accounts.google.com/o/oauth2/v2/auth?response_type=code"
-                + "&client_id=" + clientId
-                + "&redirect_uri=" + redirectUri
-                + "&scope=" + scope
-                + "&access_type=offline"
-                + "&prompt=consent";
-
-        return new RedirectView(authUrl);
+    @PutMapping("/update")
+    @Operation(summary = "Update Event", description = "Endpoint to update event based on the event id")
+    ResponseEntity<GenericResponse> updateEvent(@RequestBody UpdateEventRequest request){
+        return eventService.updateEvent(request);
     }
-
 }
